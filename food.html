@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FoodExpress – Restaurants & Menu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #ff5722;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .restaurant-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+    }
+
+    .restaurant-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .restaurant-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .restaurant-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .restaurant-info {
+      padding: 10px;
+    }
+
+    .restaurant-info h4 {
+      margin: 5px 0;
+    }
+
+    .menu {
+      display: none;
+      margin-top: 40px;
+    }
+
+    .menu-item {
+      background: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .menu-item button {
+      background-color: #4caf50;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .menu-item button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  FoodExpress – Order Delicious Meals
+</header>
+
+<div class="container">
+  <div class="section-title">Popular Restaurants</div>
+  <div class="restaurant-list" id="restaurantList">
+    <!-- Restaurants will be inserted here dynamically -->
+  </div>
+
+  <div class="menu" id="menuSection">
+    <div class="section-title" id="menuTitle">Menu</div>
+    <div id="menuItems"></div>
+  </div>
+</div>
+
+<script>
+  // Sample Data
+  const restaurants = [
+    {
+      name: "Pizza Palace",
+      cuisine: "Italian",
+      img: "https://media.istockphoto.com/id/1442417585/photo/person-getting-a-piece-of-cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=k60TjxKIOIxJpd4F4yLMVjsniB4W1BpEV4Mi_nb4uJU=",
+      menu: [
+        { item: "Margherita Pizza", price: 299 },
+        { item: "Pepperoni Pizza", price: 349 },
+        { item: "Garlic Bread", price: 149 }
+      ]
+    },
+    {
+      name: "Burger Hub",
+      cuisine: "Fast Food",
+      img: "https://olo-images-live.imgix.net/83/83af73c0530b49b1b490d4e7da8c9633.jpg?auto=format%2Ccompress&q=60&cs=tinysrgb&w=1200&h=800&fit=fill&fm=png32&bg=transparent&s=accdc878ee493ae496516a954a401eaf",
+      menu: [
+        { item: "Cheese Burger", price: 199 },
+        { item: "Veggie Burger", price: 179 },
+        { item: "French Fries", price: 99 }
+      ]
+    },
+    {
+      name: "Spice Garden",
+      cuisine: "Indian",
+      img: "https://masalaandchai.com/wp-content/uploads/2022/03/Butter-Chicken.jpg",
+      menu: [
+        { item: "Butter Chicken", price: 399 },
+        { item: "Paneer Tikka", price: 299 },
+        { item: "Naan Bread", price: 49 }
+      ]
+    }
+  ];
+
+  // Populate Restaurant List
+  const restaurantList = document.getElementById("restaurantList");
+  restaurants.forEach((rest, index) => {
+    const card = document.createElement("div");
+    card.classList.add("restaurant-card");
+    card.innerHTML = `
+      <img src="${rest.img}" alt="${rest.name}">
+      <div class="restaurant-info">
+        <h4>${rest.name}</h4>
+        <p>${rest.cuisine}</p>
+      </div>
+    `;
+    card.onclick = () => showMenu(index);
+    restaurantList.appendChild(card);
+  });
+
+  // Show Menu
+  function showMenu(index) {
+    const menuSection = document.getElementById("menuSection");
+    const menuItemsDiv = document.getElementById("menuItems");
+    const menuTitle = document.getElementById("menuTitle");
+
+    menuTitle.innerText = `${restaurants[index].name} – Menu`;
+    menuItemsDiv.innerHTML = "";
+    restaurants[index].menu.forEach(food => {
+      const div = document.createElement("div");
+      div.classList.add("menu-item");
+      div.innerHTML = `
+        <span>${food.item} – ₹${food.price}</span>
+        <button>Add to Cart</button>
+      `;
+      menuItemsDiv.appendChild(div);
+    });
+    menuSection.style.display = "block";
+    window.scrollTo({ top: menuSection.offsetTop, behavior: "smooth" });
+  }
+</script>
+
+</body>
+</html>
